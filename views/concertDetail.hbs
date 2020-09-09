@@ -1,0 +1,33 @@
+<h1>Concert: {{ name }}</h1>
+
+<h5>
+  If you are the artist start straming with this key:
+  <pre>{{ streamKey }}</pre>
+  and this server: rtmps://global-live.mux.com:443/app
+</h5>
+<small>We recommend using OBS</small>
+<br />
+
+<video id="myVideo" controls></video>
+
+<!-- Use HLS.js to support the HLS format in browsers. -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@0.8.2"></script>
+
+<script>
+  ;(function () {
+    // Replace with your asset's playback ID
+    var playbackId = "{{playbackId}}"
+    var url = "https://stream.mux.com/" + playbackId + ".m3u8"
+    var video = document.getElementById("myVideo")
+
+    // Let native HLS support handle it if possible
+    if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = url
+    } else if (Hls.isSupported()) {
+      // HLS.js-specific setup code
+      hls = new Hls()
+      hls.loadSource(url)
+      hls.attachMedia(video)
+    }
+  })()
+</script>
